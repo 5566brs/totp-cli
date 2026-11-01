@@ -2,13 +2,22 @@
 
 Generates time-based one-time passwords (TOTP, RFC 6238) from a base32 secret.
 Codes match [it-tools' OTP generator](https://it-tools.tech/otp-generator) and
-authenticator apps. Ships as a single static binary for Windows and Linux.
+authenticator apps. Ships as a single binary for Windows, Linux and macOS.
 
 ## Download
 
-Prebuilt binaries for Windows and Linux are on the
+Prebuilt binaries for Windows, Linux and macOS are on the
 [releases page](https://github.com/5566brs/totp-cli/releases/latest). They have
 no dependencies: download one and run it. `sha256sums.txt` lists their checksums.
+
+The macOS binaries are not notarized, so macOS blocks them when downloaded with
+a browser. Clear the quarantine flag once, using `totp-darwin-amd64` on Intel
+Macs:
+
+```sh
+chmod +x totp-darwin-arm64
+xattr -d com.apple.quarantine totp-darwin-arm64
+```
 
 ## Build
 
@@ -30,6 +39,8 @@ Cross-compile from any platform:
 CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/totp-windows-amd64.exe .
 CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/totp-linux-amd64 .
 CGO_ENABLED=0 GOOS=linux   GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o dist/totp-linux-arm64 .
+CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o dist/totp-darwin-arm64 .
+CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/totp-darwin-amd64 .
 ```
 
 ## Usage
